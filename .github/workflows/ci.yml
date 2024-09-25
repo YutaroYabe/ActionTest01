@@ -1,0 +1,39 @@
+# このワークフローの名前付け
+name: Simple CI
+
+# mainブランチへのプッシュ時に実行する
+on:
+  push:
+    branches:
+      - main
+
+# jobの内容を定義していく
+# jobは1つ以上の「step」から構成される。複数のjobを並行して実行することも可能。
+jobs:
+  # "test"という名前のjobを定義 
+  test:
+    # jobの実行環境の指定。今回はWindows環境でtestを実行
+    runs-on: windows-latest
+
+    # 具体的に実行するstepを定義する。stepは順番に実行される
+    steps:
+    
+    # １、"Check out repository"という名前のstepを定義
+    - name: Check out repository
+      # actions/checkout@v3 はGitHubが提供する公式アクション「コードをリポジトリからチェックアウトするアクション」 @v3...現在の最新バージョンv3の指定
+      uses: actions/checkout@v3
+
+    # ２、"Setup .NET"という名前のstepを定義
+    - name: Setup .NET
+      # actions/setup-dotnet@v3 は、GitHubが提供する公式アクション「.NET SDKを設定」
+      uses: actions/setup-dotnet@v3
+      # アクションに渡すパラメーターを指定
+      with:
+        # .NET 8.xの最新バージョン
+        dotnet-version: '8.x'
+
+    # ３、"Run tests"という名前のstepを定義
+    - name: Run tests
+      # dotnet test コマンドを使用して、MSTestプロジェクトのテストを実行
+      run: dotnet test --no-restore --verbosity normal
+      
