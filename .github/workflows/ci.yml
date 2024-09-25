@@ -32,7 +32,12 @@ jobs:
         # .NET 8.xの最新バージョン
         dotnet-version: '8.x'
 
-    # ３、"Run tests"という名前のstepを定義
+    # ３、Nugetパッケージの復元
+    # NuGetパッケージの復元を追加
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # ４、"Run tests"という名前のstepを定義
     - name: Run tests
       # dotnet test コマンドを使用して、MSTestプロジェクトのテストを実行
       run: dotnet test --no-restore --verbosity normal
